@@ -1,0 +1,147 @@
+*{
+    font-family: sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+body{
+    background-color: rgb(194, 194, 194);
+}
+
+h1{
+    color: white;
+}
+
+header{
+    display: flex;
+    justify-content: top;
+    align-items: left;
+    width: 100%;
+    min-height: flex;
+}
+
+i{
+    position: flex;
+    color: white;
+    font-size: 2rem;
+    top: 19px;
+    right: 8px;
+}
+
+.contenedor-superior{
+    position: relative;
+    width: 100%;
+    background-color: rgb(57, 57, 226);
+    border: 2px solid rgba(255, 255, 255, .6);
+    border-radius: 2px;
+    height: 100px;
+    display: flex;
+    justify-content: left;
+    align-items: center;
+}
+
+.contenedor-superior button{
+    width: 20%;
+    height: 45px;
+    align-self: rigth;
+    border-radius: 40px;
+    background: rgb(130, 0, 216);
+    border: 2px solid black;
+    font-weight: bold;
+    cursor: pointer;
+    outline: none;
+    font-size: 2rem;
+    transition: .4s;
+    color: white;
+}
+
+.contenedor-ordenamiento{
+    display: flex;
+    justify-content: top;
+    align-items: left;
+    width: 100%;
+    height: 70px;
+    position: relative;
+}
+
+.contenedor-ordenamiento select{
+    width: 20%;
+    height: 40px;
+    font-size: 1.5em;
+}
+
+.contenedor-tickets{
+    display: center;
+    justify-content: top;
+    align-items: left;
+    width: 100%;
+    position: relative;
+    height: 100%;
+}
+
+.contenedor-tickets button{
+    width: 50%;
+    height: 200px;
+    align-self: left;
+    border-radius: 10px;
+    background: white;
+    border: 2px solid black;
+    font-weight: bold;
+    cursor: pointer;
+    outline: none;
+    font-size: 2rem;
+    transition: .4s;
+    color: black;
+}
+
+.modal{
+    display: none; 
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.5);
+}
+
+.modal button{
+    width: 100%;
+    height: 45px;
+    align-self: left;
+    border-radius: 40px;
+    background: red;
+    border: 2px solid black;
+    font-weight: bold;
+    cursor: pointer;
+    outline: none;
+    font-size: 2rem;
+    transition: .4s;
+    color: white;
+}
+
+.contenido-modal{
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 600px;
+    text-align: center;
+    border-radius: 5px;
+}
+
+.close{
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus{
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
