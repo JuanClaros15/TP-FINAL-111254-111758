@@ -4,9 +4,85 @@
 <head>
     <meta charset="UTF-8">
     <script src="https://kit.fontawesome.com/41e6259da8.js" crossorigin="anonymous"></script>
-    <meta name="description" content="login para la pagina">
-    <title>AGUANTE EL ROJO</title>
-    <link rel="stylesheet" href="estilos/login.css">
+    <meta name="description" content="pagina de ticketks">
+    <title>Pagina Principal</title>
+    <link rel="stylesheet" href="estilos/pagina.css">
 </head>
 
-<h1>no</h1>
+<body>
+    <header class="seccion-superior">
+        <div class="contenedor-superior">
+            <h1>Bienvenido a tus tickets USER -</h1>
+            <button class="btn" id="añadir-ticket">Agregar Ticket <i class="fas fa-ticket-alt"></i></button>
+        </div>
+    </header>
+
+    <div class="contenedor-ordenamiento">
+        <h2>Tus Tickets, Ordénalos Por:</h2>
+        <select class="seleccionador">
+            <option value="1">Fecha de Creación</option>
+            <option value="2">Gravedad</option>
+            <option value="3">Estado</option>
+        </select>
+    </div>
+
+    <div class="contenedor-tickets" id="contenedor-tickets"></div>
+
+    <div id="ventana-info" class="modal">
+        <div class="contenido-modal">
+            <span class="close" onclick="cerrar_modal()">&times;</span>
+            <h2>Información relacionada al botón</h2>
+            <p id="info-ticket">Aquí se mostrará el URL del botón.</p>
+            <button class="cerrar-ticket" onclick="borrar_ticket()">Finalizar Ticket</button>
+        </div>
+    </div>
+
+    <script>
+        // Datos simulados para los botones de tickets
+        const botonesInfo = [
+            { texto: 'Ticket 1', url: 'https://ejemplo.com/ticket1' },
+            { texto: 'Ticket 2', url: 'https://ejemplo.com/ticket2' },
+            { texto: 'Ticket 3', url: 'https://ejemplo.com/ticket3' },
+            { texto: 'Ticket 4', url: 'https://ejemplo.com/ticket4' },
+            { texto: 'Ticket 5', url: 'https://ejemplo.com/ticket5' }
+        ];
+
+        // Función para generar dinámicamente los botones de tickets
+        const contenedorBotones = document.getElementById('contenedor-tickets');
+
+        botonesInfo.forEach(boton => {
+            const nuevoBoton = document.createElement('button');
+            nuevoBoton.textContent = boton.texto;
+            nuevoBoton.className = 'boton';
+            nuevoBoton.addEventListener('click', function() {
+                mostrar_modal(boton.url);
+            });
+            contenedorBotones.appendChild(nuevoBoton);
+        });
+
+        // Función para mostrar el modal
+        function mostrar_modal(url) {
+            var modal = document.getElementById('ventana-info');
+            var infoTicket = document.getElementById('info-ticket');
+            infoTicket.textContent = 'URL del botón: ' + url;
+            modal.style.display = 'block';
+        }
+
+        // Función para cerrar el modal
+        function cerrar_modal() {
+            var modal = document.getElementById('ventana-info');
+            modal.style.display = 'none';
+        }
+
+        function borrar_ticket() {
+        }
+
+        // Asociar evento clic a los botones generados dinámicamente
+        const botones = document.getElementsByClassName('boton');
+        for (let i = 0; i < botones.length; i++) {
+            botones[i].addEventListener('click', mostar_modal);
+        }
+    </script>
+</body>
+
+</html>
