@@ -110,9 +110,13 @@ button{
     transition: .4s;
 }
 
-button:hover{
-    opacity: .9s;
+button:hover,
+button:focus{
+    background-color: rgb(204, 202, 202);
+    text-decoration: none;
+    cursor: pointer;
 }
+
 
 .registrar{
     font-size: .8rem;
