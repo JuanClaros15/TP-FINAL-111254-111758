@@ -18,69 +18,92 @@
     </header>
 
     <div class="contenedor-ordenamiento">
-        <h2>Tus Tickets, Ordénalos Por:</h2>
-        <select class="seleccionador">
-            <option value="1">Fecha de Creación</option>
-            <option value="2">Gravedad</option>
-            <option value="3">Estado</option>
+        <h2>Tus Tickets, Ordénalos Por -</h2>
+        <h2>Fecha de Creacion:</h2>
+        <select class="ordenar-fecha">
+            <option value="1">Ascendente</option>
+            <option value="2">Descendente</option>
+        </select>
+        <h2>Estado:</h2>
+        <select class="ordenar-fecha">
+            <option value="1">En Curso</option>
+            <option value="2">Finalizado</option>
+        </select>
+        <h2>Complejidad</h2>
+        <select class="ordenar-fecha">
+            <option value="1">Baja</option>
+            <option value="2">Media</option>
+            <option value="3">Alta</option>
         </select>
     </div>
 
     <div class="contenedor-tickets" id="contenedor-tickets"></div>
-
-    <div id="ventana-info" class="modal">
-        <div class="contenido-modal">
-            <span class="close" onclick="cerrar_modal()">&times;</span>
-            <h2>Información relacionada al botón</h2>
-            <p id="info-ticket">Aquí se mostrará el URL del botón.</p>
-            <button class="cerrar-ticket" onclick="borrar_ticket()">Finalizar Ticket</button>
+    
+    <div id="ventana-info" class="ventana-emergente">
+        <div class="contenido-ventana">
+            <span class="close" onclick="cerrar_ventana_emergente()">&times;</span>
+            <h2>Más información relacionada al ticket</h2>
+            <div id="info-ticket">
+                <p><strong>Descripción del Problema:</strong> </p>
+                <p><strong>Estado:</strong> </p>
+                <p><strong>Complejidad:</strong> </p>
+                <p><strong>Usuario:</strong> </p>
+                <p><strong>Email:</strong> </p>
+                <p><strong>Fecha De Creacion:</strong> </p>
+            </div>
+            <button class="cerrar-ticket" onclick="cerrar_ventana_emergente()">Finalizar Ticket</button>
         </div>
     </div>
-
+    
     <script>
         // Datos simulados para los botones de tickets
         const botonesInfo = [
-            { texto: 'Ticket 1', url: 'https://ejemplo.com/ticket1' },
-            { texto: 'Ticket 2', url: 'https://ejemplo.com/ticket2' },
-            { texto: 'Ticket 3', url: 'https://ejemplo.com/ticket3' },
-            { texto: 'Ticket 4', url: 'https://ejemplo.com/ticket4' },
-            { texto: 'Ticket 5', url: 'https://ejemplo.com/ticket5' }
+            { texto: 'Ticket 1', descripcion: 'hola, se me rompio la notebook', estado: 'en curso', complejidad: 'baja', usuario: 'user1', mail: 'user1@gmail.com', fecha_creacion: '10/5/2023'},
+            { texto: 'Ticket 2', descripcion: 'la impresora no imprime', estado: 'finalizado', complejidad: 'media', usuario: 'user2', mail: 'user2@gmail.com', fecha_creacion: '11/1/2023'},
+            { texto: 'Ticket 3', descripcion: 'se rompio la tele', estado: 'finalizado', complejidad: 'media', usuario: 'user3', mail: 'user3@gmail.com', fecha_creacion: '10/6/2019'},
+            { texto: 'Ticket 4', descripcion: 'no me puedo conectar a internet en mi celular', estado: 'en curso', complejidad: 'baja', usuario: 'user4', mail: 'user4@gmail.com', fecha_creacion: '30/5/2024'},
+            { texto: 'Ticket 5', descripcion: 'se cayo el sistema de camaras', estado: 'en curso', complejidad: 'alta', usuario: 'user5', mail: 'user5@gmail.com', fecha_creacion: '31/12/2023'}
         ];
-
+    
         // Función para generar dinámicamente los botones de tickets
         const contenedorBotones = document.getElementById('contenedor-tickets');
-
+    
         botonesInfo.forEach(boton => {
             const nuevoBoton = document.createElement('button');
             nuevoBoton.textContent = boton.texto;
             nuevoBoton.className = 'boton';
             nuevoBoton.addEventListener('click', function() {
-                mostrar_modal(boton.url);
+                mostrar_ventana_emergente(boton);
             });
             contenedorBotones.appendChild(nuevoBoton);
         });
-
-        // Función para mostrar el modal
-        function mostrar_modal(url) {
-            var modal = document.getElementById('ventana-info');
+    
+        // Función para mostrar la ventana con la información del ticket
+        function mostrar_ventana_emergente(ticket) {
+            var ventana_emergente = document.getElementById('ventana-info');
             var infoTicket = document.getElementById('info-ticket');
-            infoTicket.textContent = 'URL del botón: ' + url;
-            modal.style.display = 'block';
+            
+            // Llena los campos con la información del ticket seleccionado
+            infoTicket.innerHTML = `
+                <p><strong>Descripción del Problema:</strong> ${ticket.descripcion}</p>
+                <p><strong>Estado:</strong> ${ticket.estado}</p>
+                <p><strong>Complejidad:</strong> ${ticket.complejidad}</p>
+                <p><strong>Usuario:</strong> ${ticket.usuario}</p>
+                <p><strong>Email:</strong> ${ticket.mail}</p>
+                <p><strong>Fecha De Creacion:</strong> ${ticket.fecha_creacion}</p>
+            `;
+            
+            ventana_emergente.style.display = 'block';
+        }
+    
+        // Función para cerrar la ventana
+        function cerrar_ventana_emergente() {
+            var ventana_emergente = document.getElementById('ventana-info');
+            ventana_emergente.style.display = 'none';
         }
 
-        // Función para cerrar el modal
-        function cerrar_modal() {
-            var modal = document.getElementById('ventana-info');
-            modal.style.display = 'none';
-        }
-
+        //debe ir en el boton cerrar-ticket
         function borrar_ticket() {
-        }
-
-        // Asociar evento clic a los botones generados dinámicamente
-        const botones = document.getElementsByClassName('boton');
-        for (let i = 0; i < botones.length; i++) {
-            botones[i].addEventListener('click', mostar_modal);
         }
     </script>
 </body>
