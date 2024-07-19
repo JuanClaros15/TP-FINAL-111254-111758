@@ -10,7 +10,7 @@ body{
     align-items: center;
     width: 100%;
     min-height: 100vh;
-    background: url(/TP-FINAL-111254-111758/frontend/img/playa.png);
+    background: url('img/playa.png');
     background-position: center;
     background-size: cover;
 }
@@ -78,7 +78,7 @@ input:valid ~ label{
 }
 
 .olvide-pass-user{
-    margin: -15px 0 15px;
+    margin: 15px 0 15px;
     font-size: .9em;
     color: white;
     display: flex;
