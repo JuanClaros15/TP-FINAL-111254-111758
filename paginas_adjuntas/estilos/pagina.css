@@ -112,6 +112,30 @@ i{
     cursor: pointer;
 }
 
+.contenedor-tickets button .usuario-boton {
+    position: relative;
+    bottom: 35%;
+    right: 45%;
+    font-size: 1.5rem;
+    color: black;
+}
+
+.contenedor-tickets button .estado-ticket-boton {
+    position: relative;
+    top: 25%;
+    right: 42%;
+    font-size: 1.5rem;
+    color: black;
+}
+
+.contenedor-tickets button .fecha-creacion-boton {
+    position: relative;
+    top: 10%;
+    left: 40%;
+    font-size: 1.5rem;
+    color: black;
+}
+
 .ventana-emergente {
     display: none;
     position: fixed;
