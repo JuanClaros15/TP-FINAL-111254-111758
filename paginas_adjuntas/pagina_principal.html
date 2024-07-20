@@ -59,9 +59,9 @@
             <h2>Agregar Nuevo Ticket</h2><br><br>
             <form id="formulario-agregar">
                 <p><strong>Titulo:</strong> </p>
-                <input type="text" id="titulo" name="titulo" required><br><br>
+                <input type="text" id="titulo" name="titulo" maxlength="35" required><br><br>
                 <p><strong>Descripción del Problema:</strong> </p>
-                <textarea id="descripcion" name="descripcion" rows="4" required></textarea><br><br>
+                <textarea id="descripcion" name="descripcion" rows="4" maxlength="1000" required></textarea><br><br>
                 <select id="complejidad" class="select-complejidad">
                     <option value="baja">Baja</option>
                     <option value="media">Media</option>

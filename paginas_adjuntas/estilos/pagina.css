@@ -154,9 +154,10 @@ i{
 .contenedor-tickets button .usuario-boton {
     position: relative;
     bottom: 35%;
-    right: 45%;
+    left: 3%;
     font-size: 1.5rem;
     color: black;
+    text-align: left;
 }
 
 .contenedor-tickets button .estado-ticket-boton {
