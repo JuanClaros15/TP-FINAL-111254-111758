@@ -5,9 +5,11 @@ from flask_login import LoginManager, login_user, current_user, logout_user, log
 #conexion con la base de datos
 from flask_sqlalchemy import SQLAlchemy
 #manejo de las contraseñas
-from flask_bcrypt import Bcrypt 
+from flask_bcrypt import Bcrypt
 #para las instancias 
 from main import db, Usuario
+
+from werkzeug.security import generate_password_hash, check_password_hash
 
 app = Flask(__name__, template_folder='../frontend/templates', static_folder='../frontend/static')  
 app.config['SECRET_KEY'] = '123456789'  
@@ -28,11 +30,11 @@ def load_user(user_id):
 
 @app.route('/')
 def index():
-    return "Hello World"
+    return "Hola Mundo!!"
 
 @app.route('/pagina_principal')
 @login_required
-def pagona_principal():
+def pagina_principal():
     return render_template('pagina_principal.html')
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -44,10 +46,27 @@ def login():
         if user and bcrypt.check_password_hash(user.password, password):
             login_user(user)
             flash('Inicio de sesión exitoso!', 'success')
-            return redirect(url_for('pagona_principal'))  # Redirige a la página principal después del login
+            return redirect(url_for('pagina_principal'))  # Redirige a la página principal después del login
         else:
             flash('Inicio de sesión fallido. Por favor, verifica tu usuario y contraseña.', 'danger')
     return render_template('index.html')
+
+@app.route('/registro', methods=['GET', 'POST'])    
+def register():
+    if request.method == 'POST':
+        username = request.form['username']
+        mail = request.form['mail']
+        password = request.form['password']
+        password_hash = bcrypt.generate_password_hash(password).decode('utf-8')
+        new_user = Usuario(username=username, mail=mail, password=password_hash)
+        
+        db.session.add(new_user)
+        db.session.commit()
+        flash('Usuario registrado exitosamente', 'success')
+        return redirect(url_for('login'))
+    
+    return render_template('registro.html')
+
 
 
 if __name__ == '__main__':

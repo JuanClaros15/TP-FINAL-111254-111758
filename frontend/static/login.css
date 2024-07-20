@@ -121,13 +121,13 @@ button:hover{
     margin: 20px 0 10px;
 }
 
-.registrar p a{
+.registrar a{
     text-decoration: none;
     color: white;
     font-weight: bold;
     transition: .3s;
 }
 
-.registrar p a:hover{
+.registrar a:hover{
     text-decoration: underline;
 }
