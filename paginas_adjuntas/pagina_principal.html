@@ -7,6 +7,7 @@
     <meta name="description" content="pagina de ticketks">
     <title>Pagina Principal</title>
     <link rel="stylesheet" href="estilos/pagina.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
 </head>
 
 <body>
@@ -37,7 +38,7 @@
     <div id="ventana-info" class="ventana-emergente">
         <div class="contenido-ventana">
             <span class="close" onclick="cerrar_ventana_emergente()">&times;</span>
-            <h2>Más información relacionada al ticket</h2>
+            <h2>Más información relacionada al ticket</h2><br><br>
             <div id="info-ticket">
                 <p><strong>Titulo:</strong> </p>
                 <p><strong>Descripción del Problema:</strong> </p>
@@ -47,7 +48,27 @@
                 <p><strong>Email:</strong> </p>
                 <p><strong>Fecha De Creacion:</strong> </p>
             </div>
-            <button class="cerrar-ticket" onclick="borrar_ticket()">Finalizar Ticket</button>
+            <button class="opcion-ticket" onclick="cerrar_ticket()">Finalizar Ticket</button>
+            <button class="opcion-ticket" onclick="borrar_ticket()">Eliminar Ticket</button>
+        </div>
+    </div>
+
+    <div id="ventana-agregar" class="ventana-emergente">
+        <div class="contenido-ventana">
+            <span class="close" onclick="cerrar_ventana_agregar()">&times;</span>
+            <h2>Agregar Nuevo Ticket</h2><br><br>
+            <form id="formulario-agregar">
+                <p><strong>Titulo:</strong> </p>
+                <input type="text" id="titulo" name="titulo" required><br><br>
+                <p><strong>Descripción del Problema:</strong> </p>
+                <textarea id="descripcion" name="descripcion" rows="4" required></textarea><br><br>
+                <select id="complejidad" class="select-complejidad">
+                    <option value="baja">Baja</option>
+                    <option value="media">Media</option>
+                    <option value="alta">Alta</option>
+                </select><br><br>
+                <button type="submit" class="crear-ticket">Crear Ticket</button>
+            </form>
         </div>
     </div>
     
@@ -106,13 +127,6 @@
                     return new Date(b.fecha_creacion.split('/').reverse().join('/')) - new Date(a.fecha_creacion.split('/').reverse().join('/'));
                 }
 
-                // Orden por estado
-                if (orden_estado === '1') {
-                    return a.estado.localeCompare(b.estado);
-                } else if (orden_estado === '2') {
-                    return b.estado.localeCompare(a.estado);
-                }
-
                 return 0;// Si no se especifica ningún orden, se mantiene el orden original
             });
 
@@ -155,6 +169,51 @@
             ventana_emergente.style.display = 'none';
         }
 
+        // Función para mostrar la ventana de agregar ticket
+        function mostrar_ventana_agregar() {
+            var ventana_agregar = document.getElementById('ventana-agregar');
+            ventana_agregar.style.display = 'block';
+        }
+
+        // Función para cerrar la ventana de agregar ticket
+        function cerrar_ventana_agregar() {
+            var ventana_agregar = document.getElementById('ventana-agregar');
+            ventana_agregar.style.display = 'none';
+        }
+
+        // Event listener para el botón "Agregar Ticket"
+        document.getElementById('añadir-ticket').addEventListener('click', function() {
+            mostrar_ventana_agregar();
+        });
+
+
+        // Función para manejar el envío del formulario de agregar ticket
+        document.getElementById('formulario-agregar').addEventListener('submit', function(event) {
+            event.preventDefault(); // Evitar que se recargue la página por defecto
+
+            // Obtener valores del formulario
+            var titulo = document.getElementById('titulo').value;
+            var descripcion = document.getElementById('descripcion').value;
+            var complejidad = document.getElementById('complejidad').value;
+
+            // Agregar el nuevo ticket (simulado)
+            botones_info.push({
+                titulo: titulo,
+                descripcion: descripcion,
+                estado: 'en curso', // Puedes definir un estado por defecto
+                complejidad: complejidad,
+                usuario: 'usuarioNuevo', // Puedes definir un usuario por defecto
+                mail: 'nuevo@usuario.com', // Puedes definir un email por defecto
+                fecha_creacion: new Date().toLocaleDateString() // Fecha actual
+            });
+
+            // Cerrar la ventana emergente de agregar
+            cerrar_ventana_agregar();
+
+            // Regenerar los botones con el nuevo ticket agregado
+            generar_botones();
+        });
+
         // Cargar inicialmente los botones
         generar_botones();
         ordenar_tickets();
@@ -162,7 +221,14 @@
         // Event listeners para los select de ordenamiento
         document.getElementById('ordenar-fecha').addEventListener('change', ordenar_tickets);
         document.getElementById('ordenar-estado').addEventListener('change', ordenar_tickets);
-        document.getElementById('ordenar-complejidad').addEventListener('change', ordenar_tickets);
+
+        function cerrar_ticket() {
+            window.location.reload();
+        }
+
+        function borrar_ticket() {
+            window.location.reload();
+        }
     </script>
 </body>
 
