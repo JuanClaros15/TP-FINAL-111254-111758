@@ -51,7 +51,7 @@ def login():
             flash('Inicio de sesión fallido. Por favor, verifica tu usuario y contraseña.', 'danger')
     return render_template('index.html')
 
-@app.route('/registro', methods=['GET', 'POST'])    
+@app.route('/register', methods=['GET', 'POST'])    
 def register():
     if request.method == 'POST':
         username = request.form['username']
@@ -67,7 +67,20 @@ def register():
     
     return render_template('registro.html')
 
-
+@app.route('/reset_password', methods=['GET','POST'])
+def reset_password():
+    if request.method == 'POST':
+        username = request.form.get('username')
+        mail = request.form.get('mail')
+        new_password = request.form.get('new_password')
+        user = Usuario.query.filter_by(mail=mail, username=username).first()
+        if user:
+            user.password = bcrypt.generate_password_hash(new_password).decode('utf-8')
+            db.session.commit()
+            flash('Tu contraseña ha sido actualizada con éxito.')
+            return redirect(url_for('login'))
+        flash('No encontramos un usuario con ese correo y nombre de usuario.')
+    return render_template('recuperar_contraseña.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
