@@ -81,7 +81,7 @@
             { titulo: 'titulo 4', descripcion: 'no me puedo conectar a internet en mi celular', estado: 'en curso', complejidad: 'baja', usuario: 'user4', mail: 'user4@gmail.com', fecha_creacion: '30/5/2024'},
             { titulo: 'titulo 5', descripcion: 'se cayo el sistema de camaras', estado: 'en curso', complejidad: 'alta', usuario: 'user5', mail: 'user5@gmail.com', fecha_creacion: '31/12/2023'}
         ];
-
+//OJOOOO
         // Función para generar dinámicamente los botones de tickets
         function generar_botones() {
             const contenedor_botones = document.getElementById('contenedor-tickets');
@@ -186,7 +186,7 @@
             mostrar_ventana_agregar();
         });
 
-
+//OJOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
         // Función para manejar el envío del formulario de agregar ticket
         document.getElementById('formulario-agregar').addEventListener('submit', function(event) {
             event.preventDefault(); // Evitar que se recargue la página por defecto
@@ -206,14 +206,14 @@
                 mail: 'nuevo@usuario.com', // Puedes definir un email por defecto
                 fecha_creacion: new Date().toLocaleDateString() // Fecha actual
             });
-
+            
             // Cerrar la ventana emergente de agregar
             cerrar_ventana_agregar();
 
             // Regenerar los botones con el nuevo ticket agregado
             generar_botones();
         });
-
+//OJOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
         // Cargar inicialmente los botones
         generar_botones();
         ordenar_tickets();
@@ -231,5 +231,4 @@
         }
     </script>
 </body>
-
 </html>
