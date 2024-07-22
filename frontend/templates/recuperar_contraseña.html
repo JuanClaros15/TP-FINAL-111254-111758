@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <script src="https://kit.fontawesome.com/41e6259da8.js" crossorigin="anonymous"></script>
+    <meta name="description" content="pagina para recuperar_contraseña">
+    <title>zona de registro</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='login.css') }}">
+</head>
+
+<body>
+    <div class="contenedor">
+        <div class="formulario">
+            <form action="{{ url_for('reset_password') }}" method="POST">
+                <div class="contenedor-h3">
+                    <h3>Recupera tu Contraseña</h3>
+                </div>
+                <div class="contenedor-input">
+                    <i class="fa-solid fa-user"></i>
+                    <input type="text" name="username"  required>
+                    <label for="username">Usuario</label>
+                </div>
+                <div class="contenedor-input">
+                    <i class="fa-solid fa-envelope"></i>
+                    <input type="text" name="mail" required>
+                    <label for="mail">Correo</label>
+                </div>
+                <div class="contenedor-input">
+                    <i class="fa-solid fa-unlock"></i>
+                    <input type="password" name="new_password" required>
+                    <label for="new_password">Nueva Contraseña</label>
+                </div>
+                <button type="submit">Finalizar</button>
+            </form>
+        </div>
+    </div>
+
+</body>
+</html>
