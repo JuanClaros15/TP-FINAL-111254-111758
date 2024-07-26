@@ -13,24 +13,33 @@
 <body>
     <header class="seccion-superior">
         <div class="contenedor-superior">
-            <h1>Bienvenido a tus tickets {{ username }} -</h1>
-            <button class="btn" id="añadir-ticket">Agregar Ticket <i class="fas fa-ticket-alt"></i></button>
+            <h1>Bienvenido a tus tickets <strong>{{ username }}</strong> </h1>
+            <div class="boton-icono">
+                <button class="btn" id="añadir-ticket">Agregar Ticket </button>
+                <i class="fas fa-ticket-alt"></i><
+            </div>
         </div>
     </header>
 
     <div class="contenedor-ordenamiento">
-        <h2>Tus Tickets, Ordénalos Por -</h2>
-        <h2>Fecha de Creacion:</h2>
-        <select id="ordenar-fecha" class="ordenar-fecha">
-            <option value="1">Descendente</option>
-            <option value="2">Ascendente</option>
-        </select>
-        <h2>-Estado:</h2>
-        <select id="ordenar-estado" class="ordenar-estado">
-            <option value="">Selecciona una opción</option>
-            <option value="1">En Curso</option>
-            <option value="2">Finalizado</option>
-        </select>
+        <h2>Tus Tickets, Ordénalos Por </h2>
+        <div class="selectores">
+            <h2>Fecha de Creacion:</h2>
+            <div class="custom-select">
+                <select id="ordenar-fecha" class="ordenar-fecha">
+                    <option value="1">Descendente</option>
+                    <option value="2">Ascendente</option>
+                </select>
+            </div>
+            <h2>Estado:</h2>
+            <div class="custom-select">
+                <select id="ordenar-estado" class="ordenar-estado">
+                    <option value=""> Selecciona una opción </option>
+                    <option value="1"> En Curso </option>
+                    <option value="2"> Finalizado </option>
+                </select>
+            </div>
+        </div>
     </div>
 
     <div class="contenedor-tickets" id="contenedor-tickets"></div>
@@ -57,7 +66,6 @@
         <div class="contenido-ventana">
             <span class="close" onclick="cerrar_ventana_agregar()">&times;</span>
             <h2>Agregar Nuevo Ticket</h2><br><br>
-
             <form id="formulario-agregar">
                 <p><strong>Titulo:</strong> </p>
                 <input type="text" id="titulo" name="titulo" maxlength="35" required><br><br>
@@ -123,27 +131,45 @@
             const orden_fecha = document.getElementById('ordenar-fecha').value;
             const orden_estado = document.getElementById('ordenar-estado').value;
 
+            // Convertir fecha_creacion a formato Date
+            botones_info.forEach(ticket => {
+                ticket.fecha_creacion_obj = convertirFecha(ticket.fecha_creacion);
+            });
+
+            // Ordenar por fecha
             botones_info.sort((a, b) => {
-                if (orden_fecha === '2') {
-                    return new Date(a.fecha_creacion) - new Date(b.fecha_creacion);
-                } else if (orden_fecha === '1') {
-                    return new Date(b.fecha_creacion) - new Date(a.fecha_creacion);
+                if (orden_fecha === '2') { 
+                    return a.fecha_creacion_obj - b.fecha_creacion_obj;
+                } else if (orden_fecha === '1') { 
+                    return b.fecha_creacion_obj - a.fecha_creacion_obj;
                 }
                 return 0;
             });
 
-            botones_info.sort((a, b) => {
-                if (orden_estado === 'en curso') {
-                    return a.estado.localeCompare(b.estado);
-                } else if (orden_estado === 'finalizado') {
-                    return b.estado.localeCompare(a.estado);
-                }
-                return 0;
+            // Ordenar por estado
+            if (orden_estado === '1') { 
+                botones_info = botones_info.filter(ticket => ticket.estado === 'en curso').concat(
+                    botones_info.filter(ticket => ticket.estado !== 'en curso')
+                );
+            } else if (orden_estado === '2') {
+                botones_info = botones_info.filter(ticket => ticket.estado === 'finalizado').concat(
+                    botones_info.filter(ticket => ticket.estado !== 'finalizado')
+                );
+            }
+
+            // Limpiar la propiedad temporal fecha_creacion_obj
+            botones_info.forEach(ticket => {
+                delete ticket.fecha_creacion_obj;
             });
 
             generar_botones();
         }
 
+        function convertirFecha(fecha) {
+            const partes = fecha.split(' ');
+            const fechaPartes = partes[0].split('/').reverse().join('-'); // Convertir dd/mm/yyyy a yyyy-mm-dd
+            return new Date(`${fechaPartes}T${partes[1]}`); // Combinar con la hora
+        }
         // Función para mostrar la ventana con la información del ticket
         function mostrar_ventana_emergente(ticket) {
             var ventana_emergente = document.getElementById('ventana-info');
@@ -187,7 +213,7 @@
 
         // Función para manejar el envío del formulario de agregar ticket
         document.getElementById('formulario-agregar').addEventListener('submit', function(event) {
-            event.preventDefault(); // Previene la recarga de la página
+            event.preventDefault(); 
 
             var titulo = document.getElementById('titulo').value;
             var descripcion = document.getElementById('descripcion').value;
@@ -229,7 +255,7 @@
 
         // Función para finalizar ticket
         function cerrar_ticket() {
-            var ticketId = selectedTicketId; // Asegúrate de que selectedTicketId esté definido correctamente
+            var ticketId = selectedTicketId; 
             fetch(`/ticket/${ticketId}/close`, {
                 method: 'PATCH',
                 headers: {
@@ -244,7 +270,7 @@
             })
             .then(() => {
                 alert('Ticket finalizado exitosamente!');
-                location.reload(); // O actualiza la UI de otra forma
+                location.reload(); 
             })
             .catch(error => {
                 console.error('Error al finalizar el ticket:', error);
@@ -254,7 +280,7 @@
 
         // Función para eliminar ticket
         function borrar_ticket() {
-            var ticketId = selectedTicketId; // Asegúrate de que selectedTicketId esté definido correctamente
+            var ticketId = selectedTicketId; 
             fetch(`/ticket/${ticketId}`, {
                 method: 'DELETE'
             })
@@ -265,7 +291,7 @@
                 return response.json();
             })
             .then(() => {
-                location.reload(); // O actualiza la UI de otra forma
+                location.reload(); 
             })
             .catch(error => {
                 console.error('Error al eliminar el ticket:', error);
