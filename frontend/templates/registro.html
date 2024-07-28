@@ -5,38 +5,35 @@
     <meta charset="UTF-8">
     <script src="https://kit.fontawesome.com/41e6259da8.js" crossorigin="anonymous"></script>
     <meta name="description" content="pagina de registro">
-    <title>AGUANTE EL ROJO</title>
-    <link rel="stylesheet" href="estilos/login.css">
+    <title>Zona de Registro</title>
+    <link rel="stylesheet" href="../static/login.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
 </head>
 
 <body>
     <div class="contenedor">
         <div class="formulario">
-            <form action="#">
+            <form action="{{url_for('register')}}" method="POST">
                 <h2>Registrate</h2>
-
                 <div class="contenedor-input">
                     <i class="fa-solid fa-user"></i>
-                    <input type="text" required>
-                    <label for="#">Usuario</label>
+                    <input type="text" id="username" name="username" required>
+                    <label for="username">Usuario</label>
                 </div>
 
                 <div class="contenedor-input">
                     <i class="fa-solid fa-envelope"></i>
-                    <input type="text" required>
-                    <label for="#">Correo</label>
+                    <input type="email" id="mail" name="mail" required>
+                    <label for="mail">Correo</label>
                 </div>
 
                 <div class="contenedor-input">
                     <i class="fa-solid fa-lock"></i>
-                    <input type="text" required>
-                    <label for="#">Contraseña</label>
+                    <input type="text" id="password" name="password" required>
+                    <label for="password">Contraseña</label>
                 </div>
+                <button type="submit">Registrame</button>
             </form>
-
-            <div>
-                <button onclick="window.location.href = '../index.html'">Registrame</button>
-            </div>
         </div>
     </div>
 
