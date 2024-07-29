@@ -9,7 +9,6 @@ class Usuario(db.Model, UserMixin):
     username = db.Column(db.String(150), unique=True, nullable=False)
     password = db.Column(db.String(255), nullable=False)
     mail = db.Column(db.String(150), unique=True, nullable=False)
-    super_user = db.Column(db.Boolean, default=False)
 
     # Relación con tickets
     tickets = db.relationship('Ticket', backref='usuario', lazy=True)

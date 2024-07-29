@@ -14,9 +14,11 @@
     <header class="seccion-superior">
         <div class="contenedor-superior">
             <h1>Bienvenido a tus tickets <strong>{{ username }}</strong> </h1>
-            <div class="boton-icono">
-                <button class="btn" id="añadir-ticket">Agregar Ticket </button>
-                <i class="fas fa-ticket-alt"></i><
+            <div class="contenedor-boton">
+                <button class="btn" id="añadir-ticket">Agregar Ticket <i class="fas fa-ticket-alt"></i></button>
+                <form method="POST"  action="{{ url_for('logout') }}">
+                    <button class="cerrar-sesion" type="submit"><i class="fa-solid fa-right-to-bracket"></i></button>
+                </form>
             </div>
         </div>
     </header>
@@ -68,10 +70,10 @@
             <h2>Agregar Nuevo Ticket</h2><br><br>
             <form id="formulario-agregar">
                 <p><strong>Titulo:</strong> </p>
-                <input type="text" id="titulo" name="titulo" maxlength="35" required><br><br>
+                <input type="text" id="titulo" name="titulo" maxlength="35" required autocomplete="off"><br><br>
             
                 <p><strong>Descripción del Problema:</strong> </p>
-                <textarea id="descripcion" name="descripcion" rows="4" maxlength="1000" required></textarea><br><br>
+                <textarea id="descripcion" name="descripcion" rows="4" maxlength="1000" required autocomplete="off"></textarea><br><br>
                 
                 <select id="prioridad" class="select-complejidad">
                     <option value="baja">Baja</option>
@@ -156,7 +158,6 @@
                     botones_info.filter(ticket => ticket.estado !== 'finalizado')
                 );
             }
-
             // Limpiar la propiedad temporal fecha_creacion_obj
             botones_info.forEach(ticket => {
                 delete ticket.fecha_creacion_obj;
@@ -164,11 +165,11 @@
 
             generar_botones();
         }
-
+        //Funcion para convertir las horas
         function convertirFecha(fecha) {
             const partes = fecha.split(' ');
-            const fechaPartes = partes[0].split('/').reverse().join('-'); // Convertir dd/mm/yyyy a yyyy-mm-dd
-            return new Date(`${fechaPartes}T${partes[1]}`); // Combinar con la hora
+            const fechaPartes = partes[0].split('/').reverse().join('-');
+            return new Date(`${fechaPartes}T${partes[1]}`);
         }
         // Función para mostrar la ventana con la información del ticket
         function mostrar_ventana_emergente(ticket) {
@@ -246,6 +247,7 @@
                         botones_info = data;
                         generar_botones();
                     });
+                document.getElementById('formulario-agregar').reset();
             })
             .catch(error => {
                 console.error('Error al crear el ticket:', error);
@@ -269,7 +271,6 @@
                 return response.json();
             })
             .then(() => {
-                alert('Ticket finalizado exitosamente!');
                 location.reload(); 
             })
             .catch(error => {

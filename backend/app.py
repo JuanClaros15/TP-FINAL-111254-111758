@@ -12,8 +12,8 @@ from main import db, Usuario, Ticket
 from werkzeug.security import generate_password_hash, check_password_hash
 import logging
 
-logging.basicConfig(level=logging.DEBUG)
 
+logging.basicConfig(level=logging.DEBUG)
 app = Flask(__name__, template_folder='../frontend/templates', static_folder='../frontend/static')  
 app.config['SECRET_KEY'] = '123456789'  
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql+psycopg2://postgres:123456789@localhost:5432/TP_FINAL'
@@ -25,7 +25,7 @@ bcrypt = Bcrypt(app)
 # Configuración de Flask-Login
 login_manager = LoginManager()
 login_manager.init_app(app)
-login_manager.login_view = 'login'  # Ruta a la página de login
+login_manager.login_view = 'login'  
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -36,7 +36,7 @@ def load_user(user_id):
 def index():
     return "Hola Mundo!!"
 
-@app.route('/logout')
+@app.route('/logout',methods=['POST'])
 @login_required
 def logout():
     logout_user()
@@ -56,7 +56,7 @@ def login():
         if user and bcrypt.check_password_hash(user.password, password):
             login_user(user)
             flash('Inicio de sesión exitoso!', 'success')
-            return redirect(url_for('pagina_principal'))  # Redirige a la página principal después del login
+            return redirect(url_for('pagina_principal'))  
         else:
             flash('Inicio de sesión fallido. Por favor, verifica tu usuario y contraseña.', 'danger')
     return render_template('index.html')
@@ -96,8 +96,10 @@ def reset_password():
 @app.route('/tickets', methods=['GET'])
 @login_required
 def get_tickets():
-    # Obtener todos los tickets del usuario actual
-    tickets = Ticket.query.filter_by(usuario_id=current_user.id_user).all()
+    if current_user.id_user == 1: 
+        tickets = Ticket.query.all()
+    else:
+        tickets = Ticket.query.filter_by(usuario_id=current_user.id_user).all()
     tickets_list = [{
         'id_ticket': ticket.id_ticket,
         'titulo': ticket.titulo,
