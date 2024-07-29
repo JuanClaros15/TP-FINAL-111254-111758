@@ -1,52 +1,70 @@
-#para manejo de rutas, consultas HTTP y crear aplicacion web
-from flask import Flask, render_template, request, redirect, url_for, flash,jsonify
-#autenticar los usuarios
+# Importaciones necesarias para manejar rutas, consultas HTTP y crear la aplicación web
+from flask import Flask, render_template, request, redirect, url_for, jsonify
+
+# Importaciones para autenticar los usuarios
 from flask_login import LoginManager, login_user, current_user, logout_user, login_required
-#conexion con la base de datos
+
+# Importación para la conexión con la base de datos
 from flask_sqlalchemy import SQLAlchemy
-#manejo de las contraseñas
+
+# Importación para el manejo de las contraseñas
 from flask_bcrypt import Bcrypt
-#para las instancias 
+
+# Importaciones de las instancias y modelos desde el módulo principal
 from main import db, Usuario, Ticket
 
+# Importaciones para funciones de seguridad
 from werkzeug.security import generate_password_hash, check_password_hash
+
+# Importación para la configuración del registro de logs
 import logging
 
-
+# Configuración básica de logging
 logging.basicConfig(level=logging.DEBUG)
-app = Flask(__name__, template_folder='../frontend/templates', static_folder='../frontend/static')  
-app.config['SECRET_KEY'] = '123456789'  
+
+# Creación de la aplicación Flask y configuración de carpetas para plantillas y archivos estáticos
+app = Flask(__name__, template_folder='../frontend/templates', static_folder='../frontend/static')
+
+# Configuración de la clave secreta y la URI de la base de datos
+app.config['SECRET_KEY'] = '123456789'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql+psycopg2://postgres:123456789@localhost:5432/TP_FINAL'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
+# Inicialización de la base de datos con la aplicación Flask
 db.init_app(app)
+
+# Inicialización de Bcrypt con la aplicación Flask para manejo de contraseñas
 bcrypt = Bcrypt(app)
 
 # Configuración de Flask-Login
 login_manager = LoginManager()
 login_manager.init_app(app)
-login_manager.login_view = 'login'  
+login_manager.login_view = 'login'  # Vista a la que se redirige para iniciar sesión si no está autenticado
 
+# Función de carga de usuario para Flask-Login
 @login_manager.user_loader
 def load_user(user_id):
     return Usuario.query.get(int(user_id))
 
-
+# Ruta raíz de la aplicación
 @app.route('/')
 def index():
     return "Hola Mundo!!"
 
-@app.route('/logout',methods=['POST'])
+# Ruta para cerrar sesión
+@app.route('/logout', methods=['POST'])
 @login_required
 def logout():
     logout_user()
     return redirect(url_for('login'))
 
+# Ruta para la página principal, requiere inicio de sesión
 @app.route('/pagina_principal')
 @login_required
 def pagina_principal():
     return render_template('pagina_principal.html', username=current_user.username)
 
+# Ruta para manejar el inicio de sesión
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -55,12 +73,10 @@ def login():
         user = Usuario.query.filter_by(username=username).first()
         if user and bcrypt.check_password_hash(user.password, password):
             login_user(user)
-            flash('Inicio de sesión exitoso!', 'success')
-            return redirect(url_for('pagina_principal'))  
-        else:
-            flash('Inicio de sesión fallido. Por favor, verifica tu usuario y contraseña.', 'danger')
+            return redirect(url_for('pagina_principal'))
     return render_template('index.html')
 
+# Ruta para manejar el registro de nuevos usuarios
 @app.route('/register', methods=['GET', 'POST'])    
 def register():
     if request.method == 'POST':
@@ -72,12 +88,11 @@ def register():
         
         db.session.add(new_user)
         db.session.commit()
-        flash('Usuario registrado exitosamente', 'success')
         return redirect(url_for('login'))
     
     return render_template('registro.html')
 
-
+# Ruta para manejar el reseteo de contraseñas
 @app.route('/reset_password', methods=['GET','POST'])
 def reset_password():
     if request.method == 'POST':
@@ -88,17 +103,16 @@ def reset_password():
         if user:
             user.password = bcrypt.generate_password_hash(new_password).decode('utf-8')
             db.session.commit()
-            flash('Tu contraseña ha sido actualizada con éxito.')
             return redirect(url_for('login'))
-        flash('No encontramos un usuario con ese correo y nombre de usuario.')
     return render_template('recuperar_contraseña.html')
 
+# Ruta para obtener la lista de tickets del usuario actual
 @app.route('/tickets', methods=['GET'])
 @login_required
 def get_tickets():
-    if current_user.id_user == 1: 
+    if current_user.id_user == 1:  # Si el usuario es el administrador
         tickets = Ticket.query.all()
-    else:
+    else:  # Si el usuario es un usuario cualquiera
         tickets = Ticket.query.filter_by(usuario_id=current_user.id_user).all()
     tickets_list = [{
         'id_ticket': ticket.id_ticket,
@@ -112,6 +126,7 @@ def get_tickets():
     } for ticket in tickets]
     return jsonify(tickets_list)
 
+# Ruta para agregar un nuevo ticket
 @app.route('/ticket', methods=['POST'])
 @login_required
 def add_ticket():
@@ -131,8 +146,7 @@ def add_ticket():
 
     return jsonify({'message': 'Ticket agregado exitosamente!'}), 201
 
-
-
+# Ruta para cerrar un ticket existente
 @app.route('/ticket/<int:ticket_id>/close', methods=['PATCH'])
 @login_required
 def close_ticket(ticket_id):
@@ -144,7 +158,7 @@ def close_ticket(ticket_id):
     db.session.commit()
     return jsonify({'message': 'Ticket finalizado exitosamente!'})
 
-
+# Ruta para eliminar un ticket existente
 @app.route('/ticket/<int:ticket_id>', methods=['DELETE'])
 @login_required
 def delete_ticket(ticket_id):
@@ -156,5 +170,6 @@ def delete_ticket(ticket_id):
     db.session.commit()
     return jsonify({'message': 'Ticket eliminado exitosamente!'})
 
+# Ejecuta la aplicación Flask en modo debug
 if __name__ == '__main__':
     app.run(debug=True)
