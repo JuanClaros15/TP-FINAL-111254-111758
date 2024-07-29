@@ -78,6 +78,7 @@ i{
 }
 
 
+/* PARA DEL BOTON DE AGREGAR TICKETS*/
 .contenedor-superior{
     padding: 0px 10px 0px 10px;
     position: relative;
@@ -97,12 +98,7 @@ i{
     font-size: 2.2rem;
 }
 
-.boton-icono{
-    display: flex;
-    align-items: center;
-}
-
-.boton-icono button{
+.contenedor-superior button{
     padding: 10px;
     height: 2.5em;
     width: auto;
@@ -115,27 +111,48 @@ i{
     font-size: 1.4rem;
     transition: .4s;
     color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
-
-.boton-icono button:hover,
-.boton-icono button:focus{
+.contenedor-superior i{
+    padding: 5px;
+    font-size: 1.2em;
+}
+.contenedor-boton button:hover,
+.contenedor-boton button :focus{
     background-color: #17238d;
     text-decoration: none;
     cursor: pointer;
 }
-.boton-icono .btn {
-    margin-right: 10px;
+
+.contenedor-boton{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.contenedor-boton .cerrar-sesion{
+    background-color: #e30b0b;
+    text-decoration: none;
+    cursor: pointer;
+    margin-left: 5px;
+}
+.contenedor-boton .cerrar-sesion:hover,
+.contenedor-boton .cerrar-sesion:focus{
+    background-color: #880d0d;
+    text-decoration: none;
+    cursor: pointer;
 }
 
 
 
+/*METODOS DE ORDENAMIENTO*/
 .contenedor-ordenamiento{
     display: flex;
     justify-content: space-around;
     align-items: center;
     width: 100%;
     height: 70px;
-    padding: 10px;
 }
 
 .selectores{
@@ -146,38 +163,42 @@ i{
 .selectores h2{
     margin: 0px 10px;
 }
+.custom-select{
+    position: relative;
+    display: inline-block;
+}
+.custom-select::after{
+    content: '\25BC'; 
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    pointer-events: none; 
+    font-size: 12px; 
+    color: white;
+}
 
 .selectores select{
     height: 40px;
     font-size: 1.5em;
-    appearance: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
     border: 2px solid black;
-    border-radius: 40px;
     background-image: none;
 }
 
 
+/*CONTENEDOR DE TICKETS*/
 
-
-
-
-
-.contenedor-tickets{
-    display: center;
-    justify-content: top;
-    align-items: left;
-    width: 100%;
-    position: relative;
-    height: 100%;
-    
+.contenedor-tickets {
+    width: calc(100% - 20px);
+    height: calc(100% - 20px);
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    padding: 10px;
 }
 
-.contenedor-tickets button{
-    max-width: 100%;
-    max-height: 100%;
-    width: 50%;
+.contenedor-tickets button {
+    position: relative;
     height: 200px;
     align-self: center;
     border-radius: 25px;
@@ -189,39 +210,45 @@ i{
     font-size: 2rem;
     transition: .4s;
     color: black;
+    padding: 10px;
 }
 
 .boton:hover,
-.boton:focus{
-    background-color:  #7c58fc;
+.boton:focus {
+    background-color: #7c58fc;
     text-decoration: none;
     cursor: pointer;
 }
 
-.contenedor-tickets button .usuario-boton {
-    position: relative;
-    bottom: 35%;
-    left: 3%;
+.contenedor-tickets button .usuario-boton,
+.contenedor-tickets button .estado-ticket-boton,
+.contenedor-tickets button .fecha-creacion-boton {
+    position: absolute; /* Posiciona los elementos dentro del botón */
     font-size: 1.5rem;
     color: black;
-    text-align: left;
+}
+
+.contenedor-tickets button .usuario-boton {
+    top: 10px;
+    left: 10px;
 }
 
 .contenedor-tickets button .estado-ticket-boton {
-    position: relative;
-    top: 25%;
-    right: 42%;
-    font-size: 1.5rem;
-    color: black;
+    bottom: 10px;
+    left: 10px;
 }
 
 .contenedor-tickets button .fecha-creacion-boton {
-    position: relative;
-    top: 10%;
-    left: 40%;
-    font-size: 1.5rem;
-    color: black;
+    bottom: 10px;
+    right: 10px;
 }
+
+
+.mensaje-no-tickets{
+    font-weight: bold;
+}
+
+/*VENTANAS EMERGENTES*/
 
 .ventana-emergente {
     display: none;
@@ -252,11 +279,6 @@ i{
     font-size: 1.5em;
 }
 
-#info-ticket p {
-    margin: 5px 0;
-    font-size: 1.5em;
-}
-
 .opcion-ticket {
     background-color: black;
     color: white;
@@ -272,6 +294,14 @@ i{
     margin-right: 20px;
 }
 
+.formulario-agregar{
+    display: flex;
+    flex-direction: column;
+}
+.formulario-agregar p{
+    margin: 5px;
+}
+
 .crear-ticket {
     background-color: black;
     color: white;
@@ -284,13 +314,16 @@ i{
     margin-top: 10px;
     cursor: pointer;
     transition: .2s;
-    margin-right: 20px;
+    margin: 5px;
 }
 
 .select-complejidad {
     border: 1px solid #ccc;
     color: black;
     background-color: white;
+    width: auto;
+    height: 40px;
+    margin: 5px;
 }
 
 .crear-ticket:hover,
@@ -306,7 +339,7 @@ i{
     text-decoration: none;
     cursor: pointer;
 }
- 
+
 .close {
     color: #aaa;
     float: right;
