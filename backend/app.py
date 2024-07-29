@@ -16,7 +16,7 @@ logging.basicConfig(level=logging.DEBUG)
 
 app = Flask(__name__, template_folder='../frontend/templates', static_folder='../frontend/static')  
 app.config['SECRET_KEY'] = '123456789'  
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql+psycopg2://postgres:123456789@localhost:5432/TP_FINAL'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql+psycopg2://postgres:1504@localhost:5432/TP_Final'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db.init_app(app)
