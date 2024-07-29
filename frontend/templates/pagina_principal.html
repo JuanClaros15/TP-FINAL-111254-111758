@@ -44,6 +44,9 @@
         </div>
     </div>
 
+    <div class="contenedor-tickets" id="contenedor-tickets">
+        <p id="mensaje-no-tickets"class="mensaje-no-tickets" style="display: none;">No tienes tickets disponibles.</p>
+    </div>
     <div class="contenedor-tickets" id="contenedor-tickets"></div>
     
     <div id="ventana-info" class="ventana-emergente">
@@ -67,19 +70,19 @@
     <div id="ventana-agregar" class="ventana-emergente">
         <div class="contenido-ventana">
             <span class="close" onclick="cerrar_ventana_agregar()">&times;</span>
-            <h2>Agregar Nuevo Ticket</h2><br><br>
-            <form id="formulario-agregar">
+            <h2>Agregar Nuevo Ticket</h2><br>
+            <form id="formulario-agregar" class="formulario-agregar">
                 <p><strong>Titulo:</strong> </p>
-                <input type="text" id="titulo" name="titulo" maxlength="35" required autocomplete="off"><br><br>
+                <input type="text" id="titulo" name="titulo" maxlength="35" required autocomplete="off"><br>
             
                 <p><strong>Descripción del Problema:</strong> </p>
-                <textarea id="descripcion" name="descripcion" rows="4" maxlength="1000" required autocomplete="off"></textarea><br><br>
-                
+                <textarea id="descripcion" name="descripcion" rows="4" maxlength="1000" required autocomplete="off"></textarea><br>
+                <p><strong>Complejidad:</strong> </p>
                 <select id="prioridad" class="select-complejidad">
                     <option value="baja">Baja</option>
                     <option value="media">Media</option>
                     <option value="alta">Alta</option>
-                </select><br><br>
+                </select><br>
                 <button type="submit" class="crear-ticket" id="crear-ticket">Crear Ticket</button>
             </form>
         </div>
@@ -92,9 +95,14 @@
                 .then(response => response.json())
                 .then(data => {
                     botones_info = data;
-                    generar_botones();
+                    if (botones_info.length === 0) {
+                        document.getElementById('mensaje-no-tickets').style.display = 'block';
+                    } else {
+                        generar_botones();
+                    }
                 });
         });
+
 
         // Función para generar dinámicamente los botones de tickets
         function generar_botones() {
